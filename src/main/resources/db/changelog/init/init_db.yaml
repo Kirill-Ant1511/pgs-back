@@ -67,6 +67,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: unit_metering
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
                   name: type_work_id
                   type: bigint
                   constraints:
@@ -103,8 +108,10 @@ databaseChangeLog:
               - column:
                   name: production_name
                   type: varchar(255)
+                  defaultOnNull: false
+                  defaultValue: ""
                   constraints:
-                    nullable: true
+                    nullable: false
               - column:
                   name: volume
                   type: float
@@ -125,7 +132,7 @@ databaseChangeLog:
       author: Kirill
       changes:
         - createTable:
-            tableName: work_reports
+            tableName: reports
             columns:
               - column: 
                   name: id
@@ -198,4 +205,10 @@ databaseChangeLog:
             baseColumnNames: subtype_work_id
             constraintName: fk_plans_subtype_works
             referencedTableName: subtype_works
+            referencedColumnNames: id
+        - addForeignKeyConstraint:
+            baseTableName: reports
+            baseColumnNames: plan_id
+            constraintName: fk_reports_plans
+            referencedTableName: plans
             referencedColumnNames: id

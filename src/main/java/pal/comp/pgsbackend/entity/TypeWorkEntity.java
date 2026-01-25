@@ -1,6 +1,7 @@
 package pal.comp.pgsbackend.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -18,11 +19,19 @@ public class TypeWorkEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "typeWork")
-    private List<SubtypeWorkEntity> subtypeWorks;
 
     @OneToMany(mappedBy = "typeWork")
+    @JsonIgnore
     private List<PlanEntity> plans;
+
+
+    public TypeWorkEntity() {}
+
+    public TypeWorkEntity(Long id, String code, String name) {
+        this.id = id;
+        this.code = code;
+        this.name = name;
+    }
 
     public String getCode() {
         return code;

@@ -27,7 +27,7 @@ plans - планы:
     - start_date: date - nullable - Дата начала работ
     - end_date: date - nullable - Дата окончания работ
     
-work_reports - отчёты по работым:
+reports - отчёты по работым:
     - id: bigint
     - plan_id: bigint - id плана
     - fact: float - факт выполненой работы

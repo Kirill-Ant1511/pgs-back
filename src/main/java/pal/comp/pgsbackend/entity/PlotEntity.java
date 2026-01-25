@@ -1,6 +1,7 @@
 package pal.comp.pgsbackend.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -16,15 +17,13 @@ public class PlotEntity {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "plot")
-    private List<PlanEntity> plans;
 
-    public List<PlanEntity> getPlans() {
-        return plans;
-    }
 
-    public void setPlans(List<PlanEntity> plans) {
-        this.plans = plans;
+    public PlotEntity() {}
+
+    public PlotEntity(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 
     public String getName() {

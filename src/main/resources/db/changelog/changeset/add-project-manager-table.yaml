@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_project_manager_table
+      author: Kirill
+      changes:
+        - createTable:
+            tableName: project_managers
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: surname
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: telegram_id
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+

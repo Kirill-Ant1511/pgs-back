@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - changeSet:
+      id: change-unique-constraint-plans
+      author: jm
+      changes:
+        - addUniqueConstraint:
+            tableName: plans
+            columnNames:
+            constraintName: plans_name_unique

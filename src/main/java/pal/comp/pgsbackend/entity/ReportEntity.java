@@ -1,19 +1,21 @@
 package pal.comp.pgsbackend.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "work_reports")
-public class WorkReport {
+@Table(name = "reports")
+public class ReportEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "plan_id")
+    @JsonIgnore
     private PlanEntity plan;
 
 
@@ -23,7 +25,6 @@ public class WorkReport {
 
     @Column(name = "delta")
     private Float delta;
-
 
     @Column(name = "date")
     private LocalDate date;
@@ -37,6 +38,21 @@ public class WorkReport {
 
     @Column(name = "comment")
     private String comment;
+
+    public ReportEntity() {
+    }
+
+    public ReportEntity(Long id, Long planId, Float fact, Float delta, LocalDate date, String whoSend, String machine, String comment) {
+        this.id = id;
+        this.plan = new PlanEntity();
+        this.plan.setId(planId);
+        this.fact = fact;
+        this.delta = delta;
+        this.date = date;
+        this.whoSend = whoSend;
+        this.machine = machine;
+        this.comment = comment;
+    }
 
     public String getComment() {
         return comment;

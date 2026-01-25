@@ -1,10 +1,10 @@
 package pal.comp.pgsbackend.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -41,9 +41,25 @@ public class PlanEntity {
     private LocalDate endDate;
 
     @OneToMany(mappedBy = "plan")
-    private List<WorkReport> workReports;
+    @JsonIgnore
+    private List<ReportEntity> workReports;
 
 
+    public PlanEntity() {}
+
+    public PlanEntity(Long id, Long plot, Long typeWork, Long subtypeWork, String productionName, Float volume, LocalDate startDate, LocalDate endDate) {
+        this.id = id;
+        this.plot = new PlotEntity();
+        this.typeWork = new TypeWorkEntity();
+        this.subtypeWork = new SubtypeWorkEntity();
+        this.plot.setId(plot);
+        this.typeWork.setId(typeWork);
+        this.subtypeWork.setId(subtypeWork);
+        this.productionName = productionName;
+        this.volume = volume;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
     public LocalDate getStartDate() {
         return startDate;
     }
@@ -60,12 +76,12 @@ public class PlanEntity {
         this.endDate = endDate;
     }
 
-    public List<WorkReport> getWorkReports() {
+    public List<ReportEntity> getWorkReports() {
         return workReports;
     }
 
-    public void setWorkReports(List<WorkReport> workReports) {
-        this.workReports = workReports;
+    public void setWorkReports(List<ReportEntity> workReportEntities) {
+        this.workReports = workReportEntities;
     }
 
     public PlotEntity getPlot() {

@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: change-constraint-table
+      author: Kirill
+      changes:
+        - addUniqueConstraint:
+            tableName: plots
+            columnNames: name
+            constraintName: uk_plots_name
+        - addUniqueConstraint:
+            tableName: type_works
+            columnNames: name
+            constraintName: uk_type_works_name
+        - addUniqueConstraint:
+            tableName: subtype_works
+            columnNames: name
+            constraintName: uk_subtype_works_name
+        - addUniqueConstraint:
+            tableName: plans
+            columnNames: plot_id, type_work_id, subtype_work_id, production_name
+            constraintName: uk_plans_foreign_key_and_production_name
+
