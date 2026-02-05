@@ -40,6 +40,9 @@ public class PlanEntity {
     @Column(name = "end_date")
     private LocalDate endDate;
 
+    @Column(name = "is_active")
+    private Boolean isActive;
+
     @OneToMany(mappedBy = "plan")
     @JsonIgnore
     private List<ReportEntity> workReports;
@@ -60,6 +63,15 @@ public class PlanEntity {
         this.startDate = startDate;
         this.endDate = endDate;
     }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
+
     public LocalDate getStartDate() {
         return startDate;
     }

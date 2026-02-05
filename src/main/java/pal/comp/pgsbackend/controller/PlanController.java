@@ -29,14 +29,16 @@ public class PlanController {
             @RequestParam(value = "plotId", required = false) Long plotId,
             @RequestParam(value = "typeWorkId", required = false) Long typeWorkId,
             @RequestParam(value = "subtypeWorkId", required = false) Long subtypeWorkId,
-            @RequestParam(value = "productionName", required = false) String productionName
+            @RequestParam(value = "productionName", required = false) String productionName,
+            @RequestParam(value = "isActive", required = false) Boolean isActive
     ) {
         log.info("Called get all plan controller");
         var filter = new RequestPlanFilter(
                 plotId,
                 typeWorkId,
                 subtypeWorkId,
-                productionName
+                productionName,
+                isActive
         );
         return planService.getAll(filter);
     }

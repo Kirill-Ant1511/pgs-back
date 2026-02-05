@@ -4,7 +4,8 @@ public record RequestPlanFilter(
         Long plotId,
         Long typeWorkId,
         Long subtypeWorkId,
-        String productionName
+        String productionName,
+        Boolean isActive
 ) {
     @Override
     public String toString() {

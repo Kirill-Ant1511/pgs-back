@@ -16,6 +16,7 @@ public record ResponsePlanDto(
         String productionName,
         Float volume,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        Boolean isActive
 ) {
 }

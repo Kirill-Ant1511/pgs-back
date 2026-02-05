@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pal.comp.pgsbackend.dto.plot.PlotDto;
 import pal.comp.pgsbackend.mapper.PlotMapper;
@@ -26,7 +27,15 @@ public class PlotService {
     public List<PlotDto> getAll() {
         log.info("Getting all plots");
         var plots = this.plotRepository.findAll();
+        return plots.stream().map(plotMapper::toDto).toList();
+    }
 
+    public List<PlotDto> getAllWithPagination(Integer page, Integer size, String nameSubstring) {
+        log.info("Getting all plots with pagination");
+        int pageNumber = page != null ? page : 0;
+        int pageSize = size != null ? size : 10;
+        Pageable pageable = Pageable.ofSize(pageSize).withPage(pageNumber);
+        var plots = this.plotRepository.findPlotsByNameSubstring(nameSubstring, pageable);
         return plots.stream().map(plotMapper::toDto).toList();
     }
 

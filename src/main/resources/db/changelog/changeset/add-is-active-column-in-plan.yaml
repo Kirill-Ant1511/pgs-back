@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_is_active_column_in_plan
+      author: Kirill
+      changes:
+        - addColumn:
+            tableName: plans
+            columns:
+              - column:
+                  name: is_active
+                  type: boolean
+                  defaultValueBoolean: true
+                  constraints:
+                    nullable: false

@@ -1,5 +1,6 @@
 package pal.comp.pgsbackend.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,5 +17,16 @@ public interface TypeWorkRepository extends JpaRepository<TypeWorkEntity, Long> 
     """)
     List<TypeWorkEntity> findPlaningTypeWork(
             @Param("plotId") Long plotId
+    );
+
+
+
+    @Query("""
+        SELECT tw FROM TypeWorkEntity tw
+        WHERE (:nameSubstring IS NULL OR tw.name LIKE LOWER(CONCAT('%', :nameSubstring, '%')))
+    """)
+    List<TypeWorkEntity> findTypeWorkByNameSubstring(
+            @Param("nameSubstring") String nameSubstring,
+            Pageable pageable
     );
 }

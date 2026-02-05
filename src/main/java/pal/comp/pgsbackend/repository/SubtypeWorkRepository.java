@@ -1,5 +1,6 @@
 package pal.comp.pgsbackend.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,5 +21,18 @@ public interface SubtypeWorkRepository extends JpaRepository<SubtypeWorkEntity, 
     List<SubtypeWorkEntity> findPlaningSubtypeWork(
             @Param("plotId") Long plotId,
             @Param("typeWorkId") Long typeWorkId
+    );
+
+
+
+    @Query("""
+        SELECT sw FROM SubtypeWorkEntity sw
+        WHERE (:typeWorkId IS NULL OR sw.typeWorkId = :typeWorkId)
+        AND (:nameSubstring IS NULL OR sw.name LIKE LOWER(CONCAT('%', :nameSubstring, '%')))
+    """)
+    List<SubtypeWorkEntity> findSubtypeWorkByFilters(
+            @Param("typeWorkId") Long typeWorkId,
+            @Param("nameSubstring") String nameSubstring,
+            Pageable pageable
     );
 }

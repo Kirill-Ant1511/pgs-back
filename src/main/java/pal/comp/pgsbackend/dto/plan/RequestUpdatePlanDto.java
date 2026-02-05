@@ -12,7 +12,8 @@ public record RequestUpdatePlanDto(
         String productionName,
         Float volume,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        Boolean isActive
 ) {
     @Override
     public String toString() {

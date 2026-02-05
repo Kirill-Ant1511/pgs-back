@@ -5,3 +5,5 @@ databaseChangeLog:
       file: /db/changelog/changeset/add-project-manager-table.yaml
   - include:
       file: /db/changelog/changeset/change-constraint-table.yaml
+  - include:
+      file: /db/changelog/changeset/add-is-active-column-in-plan.yaml

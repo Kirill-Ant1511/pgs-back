@@ -26,7 +26,8 @@ public class PlanMapper {
                  entity.getProductionName(),
                  entity.getVolume(),
                  entity.getStartDate(),
-                 entity.getEndDate()
+                 entity.getEndDate(),
+                 entity.getActive()
          );
     }
 

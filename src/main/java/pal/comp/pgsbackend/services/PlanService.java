@@ -30,7 +30,8 @@ public class PlanService {
                 filter.plotId(),
                 filter.typeWorkId(),
                 filter.subtypeWorkId(),
-                filter.productionName()
+                filter.productionName(),
+                filter.isActive()
         );
         return plansEntity.stream().map(planMapper::toDto).toList();
     }
@@ -78,6 +79,9 @@ public class PlanService {
         );
         planEntity.get().setEndDate(
                 planToUpdate.endDate() != null ? planToUpdate.endDate() : planEntity.get().getEndDate()
+        );
+        planEntity.get().setActive(
+                planToUpdate.isActive() != null ? planToUpdate.isActive() : planEntity.get().getActive()
         );
         var planEntitySaved = this.planRepository.save(planEntity.get());
         return planMapper.toDto(planEntitySaved);
