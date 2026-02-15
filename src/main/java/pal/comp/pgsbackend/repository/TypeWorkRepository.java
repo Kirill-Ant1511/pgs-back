@@ -13,7 +13,7 @@ public interface TypeWorkRepository extends JpaRepository<TypeWorkEntity, Long> 
 
     @Query("""
         select DISTINCT tw from PlanEntity p
-        left join TypeWorkEntity tw ON tw.id = p.typeWork.id where p.plot.id = :plotId
+        left join TypeWorkEntity tw ON tw.id = p.typeWork.id where p.plot.id = :plotId and p.isActive = true
     """)
     List<TypeWorkEntity> findPlaningTypeWork(
             @Param("plotId") Long plotId
