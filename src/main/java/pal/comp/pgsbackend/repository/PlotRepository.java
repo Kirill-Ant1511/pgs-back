@@ -22,9 +22,4 @@ public interface PlotRepository extends JpaRepository<PlotEntity, Long> {
     """)
     List<PlotEntity> findPlaningPlots();
 
-
-    @Query("""
-        SELECT p FROM PlotEntity p WHERE (:nameSubsrting IS NULL OR p.name LIKE LOWER(CONCAT('%', :nameSubstring, '%')))
-    """)
-    List<PlotEntity> findPlotsByNameSubstring(@Param("nameSubstring") String nameSubstring);
 }

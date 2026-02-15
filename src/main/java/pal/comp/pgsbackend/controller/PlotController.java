@@ -23,9 +23,11 @@ public class PlotController {
     }
 
     @GetMapping
-    public List<PlotDto> getAll() {
+    public List<PlotDto> getAll(
+            @RequestParam(value = "nameSubstring", required = false) String nameSubstring
+    ) {
         log.info("Called get all plot controller");
-        return this.plotService.getAll();
+        return this.plotService.getAll(nameSubstring);
     }
 
     @GetMapping("/{id}")
