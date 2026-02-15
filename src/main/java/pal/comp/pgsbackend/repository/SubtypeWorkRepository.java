@@ -16,7 +16,7 @@ public interface SubtypeWorkRepository extends JpaRepository<SubtypeWorkEntity, 
 
     @Query("""
         select DISTINCT sw from PlanEntity p
-        left join SubtypeWorkEntity sw ON sw.id = p.subtypeWork.id where p.plot.id = :plotId and p.typeWork.id = :typeWorkId
+        left join SubtypeWorkEntity sw ON sw.id = p.subtypeWork.id where p.plot.id = :plotId and p.typeWork.id = :typeWorkId and p.isActive = true
     """)
     List<SubtypeWorkEntity> findPlaningSubtypeWork(
             @Param("plotId") Long plotId,
