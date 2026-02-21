@@ -42,7 +42,6 @@ public class PlotService {
     public List<PlotDto> getPlaningPlot() {
         log.info("Getting planing plot");
         var plots = this.plotRepository.findPlaningPlots();
-        log.info("Found {} plots", plots.getFirst().getName());
         return plots.stream().map(plotMapper::toDto).toList();
     }
 

@@ -9,6 +9,20 @@ import pal.comp.pgsbackend.entity.TypeWorkEntity;
 import java.util.List;
 
 public interface TypeWorkRepository extends JpaRepository<TypeWorkEntity, Long> {
+
+
+
+    @Query("""
+    SELECT tw FROM  TypeWorkEntity tw
+    WHERE (:name IS NULL OR CAST(tw.name AS string) LIKE CONCAT('%', CAST(:name AS string), '%'))
+    AND (:code IS NULL OR CAST(tw.code AS string) LIKE CONCAT('%', CAST(:code AS string), '%'))
+""")
+    List<TypeWorkEntity> findAll(
+            @Param("name") String name,
+            @Param("code")  String code
+    );
+
+
     TypeWorkEntity findByName(String name);
 
     @Query("""

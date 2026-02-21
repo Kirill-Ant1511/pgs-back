@@ -24,9 +24,12 @@ public class TypeWorkController {
     }
 
     @GetMapping
-    public List<TypeWorkDto> getAll() {
+    public List<TypeWorkDto> getAll(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "code", required = false) String code
+    ) {
         log.info("Called get all type work controller");
-        return this.typeWorkService.getAll();
+        return this.typeWorkService.getAll(name, code);
     }
 
     @GetMapping("/{id}")

@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pal.comp.pgsbackend.dto.subtypework.SubtypeWorkDto;
 import pal.comp.pgsbackend.dto.subtypework.UpdateSubtypeWorkDto;
@@ -28,6 +29,16 @@ public class SubtypeWorkService {
         log.info("Getting all subtype works");
         var subtypeWorks = this.subtypeWorkRepository.findAll();
         return subtypeWorks.stream().map(subtypeWorkMapper::toDto).toList();
+    }
+
+
+    public List<SubtypeWorkDto> getAllWithFilters(String code, String name, Long typeWorkId, Integer pageNumber, Integer pageSize) {
+        log.info("Getting all subtype work with filters {} {} {} ", code, name, typeWorkId );
+        var size = pageSize != null ? pageSize : 10;
+        var page = pageNumber != null ? pageNumber : 0;
+        var pageable = Pageable.ofSize(size).withPage(page);
+        var subtypeWorks = this.subtypeWorkRepository.findAll(code, name, typeWorkId, pageable);
+        return  subtypeWorks.stream().map(subtypeWorkMapper::toDto).toList();
     }
 
     public SubtypeWorkDto getById(Long id) {
@@ -80,6 +91,9 @@ public class SubtypeWorkService {
         );
         subtypeWorkEntity.get().setUnitMetring(
                 subtypeWorkToUpdate.unitMetering() != null ? subtypeWorkToUpdate.unitMetering() : subtypeWorkEntity.get().getUnitMetring()
+        );
+        subtypeWorkEntity.get().setTypeWorkId(
+                subtypeWorkToUpdate.typeWorkId() != null ? subtypeWorkToUpdate.typeWorkId() : subtypeWorkEntity.get().getTypeWorkId()
         );
 
         var updatedSubtype = this.subtypeWorkRepository.save(subtypeWorkEntity.get());

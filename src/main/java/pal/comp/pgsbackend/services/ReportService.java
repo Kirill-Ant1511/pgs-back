@@ -1,8 +1,11 @@
 package pal.comp.pgsbackend.services;
 
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import pal.comp.pgsbackend.dto.report.RequestByFilterDto;
 import pal.comp.pgsbackend.dto.report.RequestCreateReportDto;
@@ -38,6 +41,22 @@ public class ReportService {
         ).stream().map(reportMapper::toDto).toList();
     }
 
+    public List<ResponseReportDto> getAllByFilterWithPagination(RequestByFilterDto requestFilter) {
+        log.info("Get reports by filter = {}" , requestFilter.toString());
+        var pageable = Pageable.ofSize(requestFilter.pageSize()).withPage(requestFilter.pageNumber());
+        return reportRepository.getReportsByFilterWithPagination(
+                requestFilter.planId(),
+                requestFilter.plotId(),
+                requestFilter.typeWorkId(),
+                requestFilter.subtypeWorkId(),
+                requestFilter.productionName(),
+                requestFilter.startDate(),
+                requestFilter.endDate(),
+                requestFilter.constDate(),
+                pageable
+        ).stream().map(reportMapper::toDto).toList();
+    }
+
     @Transactional
     public ResponseReportDto create(RequestCreateReportDto reportToCreate) {
         log.info("Create report = {}", reportToCreate.toString());
@@ -70,6 +89,17 @@ public class ReportService {
         var createdReport = reportRepository.save(reportEntity);
         this.reportRepository.resetDelta(createdReport.getPlan().getId());
         return reportMapper.toDto(createdReport);
+    }
+
+
+
+    public void delete(Long id) {
+        log.info("Delete report = {}", id);
+        var foundReport = reportRepository.findById(id);
+        if (foundReport.isEmpty()) {
+             throw new EntityNotFoundException("Report not found");
+        }
+        reportRepository.deleteById(id);
     }
 
 

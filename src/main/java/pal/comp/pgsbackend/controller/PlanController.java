@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import pal.comp.pgsbackend.dto.RequestPlanFilterWithPagination;
 import pal.comp.pgsbackend.dto.plan.RequestCreatePlanDto;
 import pal.comp.pgsbackend.dto.plan.RequestPlanFilter;
 import pal.comp.pgsbackend.dto.plan.RequestUpdatePlanDto;
@@ -30,9 +31,23 @@ public class PlanController {
             @RequestParam(value = "typeWorkId", required = false) Long typeWorkId,
             @RequestParam(value = "subtypeWorkId", required = false) Long subtypeWorkId,
             @RequestParam(value = "productionName", required = false) String productionName,
-            @RequestParam(value = "isActive", required = false) Boolean isActive
+            @RequestParam(value = "isActive", required = false) Boolean isActive,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "size", required = false) Integer size
     ) {
         log.info("Called get all plan controller");
+        if (page != null && size != null) {
+            var filter = new RequestPlanFilterWithPagination(
+                    plotId,
+                    typeWorkId,
+                    subtypeWorkId,
+                    productionName,
+                    isActive,
+                    page,
+                    size
+            );
+            return planService.getAllWithPagination(filter);
+        }
         var filter = new RequestPlanFilter(
                 plotId,
                 typeWorkId,
@@ -41,6 +56,18 @@ public class PlanController {
                 isActive
         );
         return planService.getAll(filter);
+    }
+
+    @GetMapping("/by-fk")
+    public ResponsePlanDto getByForeignKey(
+            @RequestParam(name = "plotId") Long plotId,
+            @RequestParam(name = "typeWorkId") Long typeWorkId,
+            @RequestParam(name = "subtypeWorkId") Long subtypeWorkId,
+            @RequestParam(name = "productionName") String productionName,
+            @RequestParam(name = "isActive") Boolean isActive
+    ) {
+        log.info("Called get by foreign key {} {} {} {} {}",  plotId, typeWorkId, subtypeWorkId, productionName, isActive);
+        return this.planService.findByForeignKey(plotId, typeWorkId, subtypeWorkId, productionName, isActive);
     }
 
     @GetMapping("/{id}")

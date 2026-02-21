@@ -11,7 +11,9 @@ public record RequestByFilterDto(
         String productionName,
         LocalDate startDate,
         LocalDate endDate,
-        LocalDate constDate
+        LocalDate constDate,
+        Integer pageNumber,
+        Integer pageSize
 ) {
     @Override
     public String toString() {

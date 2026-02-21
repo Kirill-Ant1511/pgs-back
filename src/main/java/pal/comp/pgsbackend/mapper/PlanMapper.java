@@ -40,7 +40,8 @@ public class PlanMapper {
                 dto.productionName(),
                 dto.volume(),
                 dto.startDate(),
-                dto.endDate()
+                dto.endDate(),
+                dto.isActive()
         );
     }
 }

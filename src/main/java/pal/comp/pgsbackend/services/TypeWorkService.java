@@ -25,9 +25,9 @@ public class TypeWorkService {
         this.typeWorkMapper = typeWorkMapper;
     }
 
-    public List<TypeWorkDto> getAll() {
+    public List<TypeWorkDto> getAll(String name, String code) {
         log.info("Getting all type works");
-        var typeWorks = this.typeWorkRepository.findAll();
+        var typeWorks = this.typeWorkRepository.findAll(name, code);
         return typeWorks.stream().map(typeWorkMapper::toDto).toList();
     }
 

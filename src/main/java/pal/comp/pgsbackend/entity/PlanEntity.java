@@ -50,7 +50,7 @@ public class PlanEntity {
 
     public PlanEntity() {}
 
-    public PlanEntity(Long id, Long plot, Long typeWork, Long subtypeWork, String productionName, Float volume, LocalDate startDate, LocalDate endDate) {
+    public PlanEntity(Long id, Long plot, Long typeWork, Long subtypeWork, String productionName, Float volume, LocalDate startDate, LocalDate endDate, Boolean isActive) {
         this.id = id;
         this.plot = new PlotEntity();
         this.typeWork = new TypeWorkEntity();
@@ -62,6 +62,7 @@ public class PlanEntity {
         this.volume = volume;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.isActive = isActive;
     }
 
     public Boolean getActive() {

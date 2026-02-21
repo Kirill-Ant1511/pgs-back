@@ -11,6 +11,26 @@ import java.util.List;
 
 public interface SubtypeWorkRepository extends JpaRepository<SubtypeWorkEntity, Long> {
 
+
+
+
+    @Query("""
+    SELECT sw FROM SubtypeWorkEntity sw
+    WHERE (:name IS NULL OR CAST(sw.name AS string) LIKE CONCAT('%', CAST(:name AS string), '%'))
+    AND (:code IS NULL OR CAST(sw.code AS string) LIKE CONCAT('%', CAST(:code AS string), '%'))
+    AND (:typeWorkId IS NULL OR sw.typeWorkId = :typeWorkId)
+""")
+    List<SubtypeWorkEntity> findAll(
+            @Param("code") String code,
+            @Param("name") String name,
+            @Param("typeWorkId") Long typeWorkId,
+            Pageable pageable
+    );
+
+
+
+
+
     List<SubtypeWorkEntity> findByTypeWorkId(Long typeWorkId);
     SubtypeWorkEntity findByName(String name);
 

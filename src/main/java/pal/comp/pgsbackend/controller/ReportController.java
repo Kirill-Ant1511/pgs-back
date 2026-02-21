@@ -1,6 +1,7 @@
 package pal.comp.pgsbackend.controller;
 
 import jakarta.validation.Valid;
+import org.apache.catalina.filters.RequestFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -35,9 +36,26 @@ public class ReportController {
             @RequestParam(value = "productionName", required = false) String productionName,
             @RequestParam(value = "startDate", required = false) LocalDate startDate,
             @RequestParam(value = "endDate", required = false) LocalDate endDate,
-            @RequestParam(value = "constDate", required = false) LocalDate constDate
+            @RequestParam(value = "constDate", required = false) LocalDate constDate,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "size", required = false) Integer size
             ) {
         log.info("Called get all reports controller");
+        if (page != null && size != null) {
+            var filter = new RequestByFilterDto(
+                    planId,
+                    PlotId,
+                    typeWorkId,
+                    subtypeWorkId,
+                    productionName,
+                    startDate,
+                    endDate,
+                    constDate,
+                    page,
+                    size
+            );
+            return reportService.getAllByFilterWithPagination(filter);
+        }
         var filter = new RequestByFilterDto(
                 planId,
                 PlotId,
@@ -46,7 +64,9 @@ public class ReportController {
                 productionName,
                 startDate,
                 endDate,
-                constDate
+                constDate,
+                null,
+                null
         );
         return reportService.getAllByFilter(filter);
     }
@@ -55,5 +75,11 @@ public class ReportController {
     public ResponseReportDto create(@RequestBody @Valid RequestCreateReportDto reportToCreate) {
         log.info("Called create report controller");
         return reportService.create(reportToCreate);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        log.info("Called delete report controller");
+        reportService.delete(id);
     }
 }

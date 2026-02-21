@@ -29,6 +29,18 @@ public class SubtypeWorkController {
         return this.subtypeWorkService.getAll();
     }
 
+    @GetMapping("/with-filters")
+    public List<SubtypeWorkDto> getAllWithFilters(
+            @RequestParam(value = "name", required = false) String name,
+            @RequestParam(value = "code", required = false) String code,
+            @RequestParam(value = "typeWorkId", required = false) Long typeWorkId,
+            @RequestParam(value = "pageNumber", required = false) Integer pageNumber,
+            @RequestParam(value = "pageSize", required = false) Integer pageSize
+    ) {
+        log.info("Called get all with filters subtype work controller");
+        return this.subtypeWorkService.getAllWithFilters(code, name, typeWorkId, pageNumber, pageSize);
+    }
+
     @GetMapping("/{id}")
     public SubtypeWorkDto getById(@PathVariable Long id) {
         log.info("Called get by id subtype work controller");

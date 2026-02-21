@@ -18,6 +18,8 @@ public record RequestCreatePlanDto(
         @NotNull
         Float volume,
         LocalDate startDate,
-        LocalDate endDate
+        LocalDate endDate,
+        @Null
+        Boolean isActive
 ) {
 }

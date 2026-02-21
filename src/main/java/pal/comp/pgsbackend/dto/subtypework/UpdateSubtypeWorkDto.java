@@ -6,7 +6,8 @@ import jakarta.validation.constraints.Null;
 public record UpdateSubtypeWorkDto(
         String code,
         String name,
-        String unitMetering
+        String unitMetering,
+        Long typeWorkId
 ) {
     @Override
     public String toString() {

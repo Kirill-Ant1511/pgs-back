@@ -1,5 +1,6 @@
 package pal.comp.pgsbackend.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -32,6 +33,28 @@ public interface ReportRepository extends JpaRepository<ReportEntity, Long> {
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate,
             @Param("constDate") LocalDate constDate
+    );
+
+    @Query("""
+    SELECT r FROM ReportEntity r
+    WHERE (:planId IS NULL OR r.plan.id = :planId)
+    AND (:plotId IS NULL OR r.plan.plot.id = :plotId)
+    AND (:typeWorkId IS NULL OR r.plan.typeWork.id = :typeWorkId)
+    AND (:subtypeWorkId IS NULL OR r.plan.subtypeWork.id = :subtypeWorkId)
+    AND (:productionName IS NULL OR CAST(r.plan.productionName AS string) LIKE CONCAT('%', CAST(:productionName AS string), '%'))
+    AND (r.date BETWEEN COALESCE(:startDate, r.date) AND COALESCE(:endDate, r.date))
+    AND (r.date = COALESCE(:constDate, r.date))
+""")
+    List<ReportEntity> getReportsByFilterWithPagination(
+            @Param("planId") Long planId,
+            @Param("plotId") Long plotId,
+            @Param("typeWorkId") Long typeWorkId,
+            @Param("subtypeWorkId") Long subtypeWorkId,
+            @Param("productionName") String productionName,
+            @Param("startDate") LocalDate startDate,
+            @Param("endDate") LocalDate endDate,
+            @Param("constDate") LocalDate constDate,
+            Pageable pageable
     );
 
     @Modifying
