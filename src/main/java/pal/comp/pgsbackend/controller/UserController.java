@@ -3,33 +3,34 @@ package pal.comp.pgsbackend.controller;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import pal.comp.pgsbackend.dto.projectmanager.ResponseProjectManagerDto;
-import pal.comp.pgsbackend.services.ProjectManagerService;
+import pal.comp.pgsbackend.dto.users.RequestUserDto;
+import pal.comp.pgsbackend.dto.users.ResponseUserDto;
+import pal.comp.pgsbackend.services.UserService;
 
 import java.util.List;
 
 @RestController
 @Controller
-@RequestMapping("/project-manager")
-public class ProjectManagerController {
-    private final ProjectManagerService projectManagerService;
+@RequestMapping("/users")
+public class UserController {
+    private final UserService projectManagerService;
 
-    public ProjectManagerController(ProjectManagerService projectManagerService) {
+    public UserController(UserService projectManagerService) {
         this.projectManagerService = projectManagerService;
     }
 
     @GetMapping
-    public List<ResponseProjectManagerDto> getAll() {
+    public List<ResponseUserDto> getAll() {
         return projectManagerService.getAll();
     }
 
     @GetMapping("/{telegramId}")
-    public ResponseProjectManagerDto getByTelegramId(@PathVariable String telegramId) {
+    public ResponseUserDto getByTelegramId(@PathVariable String telegramId) {
         return projectManagerService.getByTelegramId(telegramId);
     }
 
     @PostMapping
-    public ResponseProjectManagerDto create(@RequestBody @Valid ResponseProjectManagerDto projectManagerToCreate) {
+    public ResponseUserDto create(@RequestBody @Valid RequestUserDto projectManagerToCreate) {
         return projectManagerService.create(projectManagerToCreate);
     }
 

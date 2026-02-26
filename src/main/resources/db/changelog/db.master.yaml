@@ -7,3 +7,9 @@ databaseChangeLog:
       file: /db/changelog/changeset/change-constraint-table.yaml
   - include:
       file: /db/changelog/changeset/add-is-active-column-in-plan.yaml
+  - include:
+      file: /db/changelog/changeset/rename-project-manager.yaml
+  - include:
+      file: /db/changelog/changeset/add-new-column-for-users.yaml
+  - include:
+      file: /db/changelog/changeset/add-column-and-constraint-for-users.yaml
