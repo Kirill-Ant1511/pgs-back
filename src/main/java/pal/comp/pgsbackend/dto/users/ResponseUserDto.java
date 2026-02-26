@@ -3,8 +3,11 @@ package pal.comp.pgsbackend.dto.projectmanager;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
+import pal.comp.pgsbackend.entity.Role;
 
-public record ResponseProjectManagerDto(
+import java.util.List;
+
+public record ResponseUserDto(
         @Null
         Long id,
         @NotNull
@@ -12,7 +15,10 @@ public record ResponseProjectManagerDto(
         @NotNull
         String surname,
         @NotNull
-        String telegramId
+        String telegramId,
+        @NotNull
+        Role role,
+        List<ResponseUserPlotsDto> plots
 ) {
     @Override
     public String toString() {

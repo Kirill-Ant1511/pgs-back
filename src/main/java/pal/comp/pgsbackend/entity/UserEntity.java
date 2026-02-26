@@ -1,10 +1,12 @@
 package pal.comp.pgsbackend.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Table(name = "project_managers")
-public class ProjectManagerEntity {
+@Table(name = "users")
+public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -18,14 +20,41 @@ public class ProjectManagerEntity {
     @Column(name = "telegram_id")
     private String telegramId;
 
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-    public ProjectManagerEntity() {}
+    @ManyToMany
+    @JoinTable(
+            name = "user_plots",
+            joinColumns = @JoinColumn(name = "plot_id")
+    )
+    private List<PlotEntity> userPlots;
 
-    public ProjectManagerEntity(Long id, String name, String surname, String telegramId) {
-        this.id = id;
+    public Users() {
+    }
+
+    public Users(String name, String surname, String telegramId, Role role) {
         this.name = name;
         this.surname = surname;
         this.telegramId = telegramId;
+        this.role = role;
+    }
+
+    public List<PlotEntity> getUserPlots() {
+        return userPlots;
+    }
+
+    public void setUserPlots(List<PlotEntity> userPlots) {
+        this.userPlots = userPlots;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getName() {

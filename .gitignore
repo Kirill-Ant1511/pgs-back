@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 docker-compose.yaml
+/src/main/resources/application.properties
 
 ### STS ###
 .apt_generated
@@ -19,7 +20,9 @@ docker-compose.yaml
 *.iws
 *.iml
 *.ipr
-
+*.DS_Store
+.env
+application.properties.example
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
