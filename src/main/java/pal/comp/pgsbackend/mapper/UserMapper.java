@@ -3,30 +3,28 @@ package pal.comp.pgsbackend.mapper;
 import org.springframework.stereotype.Component;
 import pal.comp.pgsbackend.dto.users.RequestUserDto;
 import pal.comp.pgsbackend.dto.users.ResponseUserDto;
-import pal.comp.pgsbackend.dto.users.ResponseUserPlotsDto;
-import pal.comp.pgsbackend.entity.Users;
+import pal.comp.pgsbackend.entity.UserEntity;
 
 @Component
-public class ProjectManagerMapper {
-    public ResponseUserDto toDto(Users projectManagerEntity) {
+public class UserMapper {
+    public ResponseUserDto toDto(UserEntity userEntity) {
         return new ResponseUserDto(
-                projectManagerEntity.getId(),
-                projectManagerEntity.getName(),
-                projectManagerEntity.getSurname(),
-                projectManagerEntity.getTelegramId(),
-                projectManagerEntity.getRole(),
-                projectManagerEntity.getUserPlots().stream().map(
-                        plotEntity -> new ResponseUserPlotsDto(plotEntity.getPlot().getId(), plotEntity.getPlot().getName())
-                ).toList()
+                userEntity.getId(),
+                userEntity.getName(),
+                userEntity.getSurname(),
+                userEntity.getTelegramId(),
+                userEntity.getRole(),
+                userEntity.getUserPlots()
+
         );
     }
 
-    public Users toEntity(RequestUserDto projectManagerDto) {
-        return new Users(
-                projectManagerDto.name(),
-                projectManagerDto.surname(),
-                projectManagerDto.telegramId(),
-                projectManagerDto.role()
+    public UserEntity toEntity(RequestUserDto userDto) {
+        return new UserEntity(
+                userDto.name(),
+                userDto.surname(),
+                userDto.telegramId(),
+                userDto.role()
         );
     }
 }

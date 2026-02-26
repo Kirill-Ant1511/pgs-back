@@ -1,4 +1,4 @@
-package pal.comp.pgsbackend.dto.projectmanager;
+package pal.comp.pgsbackend.dto.users;
 
 public record ResponseUserPlotsDto(
         Long plotId,

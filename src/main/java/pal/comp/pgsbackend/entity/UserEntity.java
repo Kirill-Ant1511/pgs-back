@@ -1,12 +1,13 @@
 package pal.comp.pgsbackend.entity;
 
 import jakarta.persistence.*;
+import org.aspectj.weaver.Lint;
+
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
-public class Users {
+public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,15 +27,16 @@ public class Users {
 
     @ManyToMany
     @JoinTable(
-            name = "user_plots",
-            joinColumns = @JoinColumn(name = "plot_id")
+            name = "user_plots", // Имя вашей таблицы из скриншота
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "plot_id")
     )
     private List<PlotEntity> userPlots;
 
-    public Users() {
+    public UserEntity() {
     }
 
-    public Users(String name, String surname, String telegramId, Role role) {
+    public UserEntity(String name, String surname, String telegramId, Role role) {
         this.name = name;
         this.surname = surname;
         this.telegramId = telegramId;

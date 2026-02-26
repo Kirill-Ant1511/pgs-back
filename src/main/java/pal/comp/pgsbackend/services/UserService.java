@@ -4,50 +4,55 @@ import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import pal.comp.pgsbackend.dto.projectmanager.ResponseProjectManagerDto;
-import pal.comp.pgsbackend.mapper.ProjectManagerMapper;
-import pal.comp.pgsbackend.repository.ProjectManagerRepository;
+import pal.comp.pgsbackend.dto.users.RequestUserDto;
+import pal.comp.pgsbackend.dto.users.ResponseUserDto;
+import pal.comp.pgsbackend.entity.PlotEntity;
+import pal.comp.pgsbackend.mapper.UserMapper;
+import pal.comp.pgsbackend.repository.UserRepository;
 
 import java.util.List;
 
 @Service
-public class ProjectManagerService {
-    private static final Logger log = LoggerFactory.getLogger(ProjectManagerService.class);
-    private final ProjectManagerRepository projectManagerRepository;
-    private final ProjectManagerMapper projectManagerMapper;
+public class UserService {
+    private static final Logger log = LoggerFactory.getLogger(UserService.class);
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
-
-    public ProjectManagerService(ProjectManagerRepository projectManagerRepository, ProjectManagerMapper projectManagerMapper) {
-        this.projectManagerRepository = projectManagerRepository;
-        this.projectManagerMapper = projectManagerMapper;
+    public UserService(UserRepository projectManagerRepository, UserMapper projectManagerMapper) {
+        this.userRepository = projectManagerRepository;
+        this.userMapper = projectManagerMapper;
     }
 
-    public List<ResponseProjectManagerDto> getAll() {
+    public List<ResponseUserDto> getAll() {
         log.info("Getting all project manager");
-        var prManagers = this.projectManagerRepository.findAll();
-        return prManagers.stream().map(projectManagerMapper::toDto).toList();
+        var prManagers = this.userRepository.findAll();
+        return prManagers.stream().map(userMapper::toDto).toList();
     }
 
-    public ResponseProjectManagerDto getByTelegramId(String telegramId) {
+    public ResponseUserDto getByTelegramId(String telegramId) {
         log.info("Getting project manager by telegramId = {}", telegramId);
-        var prManager = this.projectManagerRepository.findByTelegramId(telegramId);
+        var prManager = this.userRepository.findByTelegramId(telegramId);
         if (prManager.isEmpty())
             throw new EntityNotFoundException("Такого проектного менеджера не существует");
-        return projectManagerMapper.toDto(prManager.get());
+        return userMapper.toDto(prManager.get());
     }
 
-    public ResponseProjectManagerDto create(ResponseProjectManagerDto prManagerToCreate) {
-        log.info("Creating project manager: {}", prManagerToCreate.toString());
-        var prManagerEntity = projectManagerMapper.toEntity(prManagerToCreate);
-        var createdPrManager = this.projectManagerRepository.save(prManagerEntity);
-        return projectManagerMapper.toDto(createdPrManager);
+    public ResponseUserDto create(RequestUserDto userToCreate) {
+        log.info("Creating project manager: {}", userToCreate.toString());
+        var userEntity = userMapper.toEntity(userToCreate);
+        userToCreate.plotIds().forEach(System.out::println);
+        var plots =  userToCreate.plotIds().stream().map(id -> new PlotEntity(id, null)).toList();
+
+        userEntity.setUserPlots(plots);
+        var createdPrManager = this.userRepository.save(userEntity);
+        return userMapper.toDto(createdPrManager);
     }
 
     public void delete(Long id) {
         log.info("Deleting project manager by id = {}", id);
-        var prManager = this.projectManagerRepository.findById(id);
+        var prManager = this.userRepository.findById(id);
         if (prManager.isEmpty())
             throw new EntityNotFoundException("Такого проектного менеджера не существует");
-        this.projectManagerRepository.delete(prManager.get());
+        this.userRepository.delete(prManager.get());
     }
 }
