@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-new-column-for-users
+      author: Kirill
+      changes:
+        - addColumn:
+            tableName: users
+            columns:
+              - column:
+                  name: role
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
