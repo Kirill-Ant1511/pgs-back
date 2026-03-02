@@ -13,3 +13,5 @@ databaseChangeLog:
       file: /db/changelog/changeset/add-new-column-for-users.yaml
   - include:
       file: /db/changelog/changeset/add-column-and-constraint-for-users.yaml
+  - include:
+      file: /db/changelog/changeset/add-machine-column.yaml

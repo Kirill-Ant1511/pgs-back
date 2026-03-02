@@ -1,0 +1,57 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-machine-column
+      author: Kirill
+      changes:
+        - createTable:
+            tableName: machines
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: text
+                  constraints:
+                    nullable: false
+                    unique: true
+
+        - createTable:
+            tableName: machine_plans
+            columns:
+              - column:
+                  name: machine_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: plan_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+            primaryKeyName: pl_machine_plans
+            primaryKeyColumnNames: machine_id, plan_id
+        - addForeignKeyConstraint:
+            baseTableName: machine_plans
+            baseColumnNames: machine_id
+            referencedTableName: machines
+            referencedColumnNames: id
+            constraintName: fk_machine_plan_machine
+        - addForeignKeyConstraint:
+            baseTableName: machine_plans
+            baseColumnNames: plan_id
+            referencedTableName: plans
+            referencedColumnNames: id
+            constraintName: fk_plan_machine_plan
+        - addUniqueConstraint:
+            tableName: user_plots
+            columnNames: plot_id, user_id
+            constraintName: uk_user_plots_ids
+        - addUniqueConstraint:
+            tableName: machine_plans
+            columnNames: machine_id, plan_id
+            constraintName: uk_machine_plans_idsЦ

@@ -4,16 +4,19 @@ import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import pal.comp.pgsbackend.dto.RequestPlanFilterWithPagination;
 import pal.comp.pgsbackend.dto.plan.RequestCreatePlanDto;
 import pal.comp.pgsbackend.dto.plan.RequestPlanFilter;
 import pal.comp.pgsbackend.dto.plan.RequestUpdatePlanDto;
 import pal.comp.pgsbackend.dto.plan.ResponsePlanDto;
+import pal.comp.pgsbackend.entity.MachineEntity;
 import pal.comp.pgsbackend.mapper.PlanMapper;
 import pal.comp.pgsbackend.repository.PlanRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PlanService {
@@ -78,9 +81,21 @@ public class PlanService {
         var planEntity = planMapper.toEntity(planToCreate);
         if (planEntity.getProductionName() == null)
             planEntity.setProductionName("");
+        if(planToCreate.machineIds() != null) {
+            System.out.println("machine ids : " + planToCreate.machineIds());
+            var machinesEntity = planToCreate.machineIds().stream().map(MachineEntity::new).collect(Collectors.toSet());
+            planEntity.setMachines(machinesEntity.stream().toList());
+        }
         planEntity.setActive(true);
         var planEntitySaved = this.planRepository.save(planEntity);
         return planMapper.toDto(planEntitySaved);
+    }
+    public ResponsePlanDto addMachine(Long planId, Long machineId) {
+        var planEntity = this.planRepository.findById(planId).orElseThrow(
+                () -> new EntityNotFoundException("Such plan not exists")
+        );
+        this.planRepository.addMachineInPlan(planId, machineId);
+        return planMapper.toDto(planEntity);
     }
 
     public ResponsePlanDto update(Long id, RequestUpdatePlanDto planToUpdate) {

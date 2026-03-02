@@ -1,15 +1,13 @@
 package pal.comp.pgsbackend.controller;
 
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pal.comp.pgsbackend.dto.RequestPlanFilterWithPagination;
-import pal.comp.pgsbackend.dto.plan.RequestCreatePlanDto;
-import pal.comp.pgsbackend.dto.plan.RequestPlanFilter;
-import pal.comp.pgsbackend.dto.plan.RequestUpdatePlanDto;
-import pal.comp.pgsbackend.dto.plan.ResponsePlanDto;
+import pal.comp.pgsbackend.dto.plan.*;
 import pal.comp.pgsbackend.services.PlanService;
 
 import java.util.List;
@@ -80,6 +78,12 @@ public class PlanController {
     public ResponsePlanDto create(@RequestBody @Valid RequestCreatePlanDto planToCreate) {
         log.info("Called create plan");
         return planService.create(planToCreate);
+    }
+
+    @PostMapping("/add-machine")
+    public ResponsePlanDto addMachine(@RequestBody RequestAddMachineDto dto) {
+        log.info("Called add machine plan");
+        return planService.addMachine(dto.planId(), dto.machineId());
     }
 
     @PatchMapping("/{id}")
