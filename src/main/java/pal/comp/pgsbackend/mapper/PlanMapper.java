@@ -10,11 +10,13 @@ public class PlanMapper {
     private final PlotMapper plotMapper;
     private final TypeWorkMapper typeWorkMapper;
     private final SubtypeWorkMapper subtypeWorkMapper;
+    private final MachineMapper machineMapper;
 
-    public PlanMapper(PlotMapper plotMapper, TypeWorkMapper typeWorkMapper, SubtypeWorkMapper subtypeWorkMapper) {
+    public PlanMapper(PlotMapper plotMapper, TypeWorkMapper typeWorkMapper, SubtypeWorkMapper subtypeWorkMapper, MachineMapper machineMapper) {
         this.plotMapper = plotMapper;
         this.typeWorkMapper = typeWorkMapper;
         this.subtypeWorkMapper = subtypeWorkMapper;
+        this.machineMapper = machineMapper;
     }
 
     public ResponsePlanDto toDto(PlanEntity entity) {
@@ -27,7 +29,10 @@ public class PlanMapper {
                  entity.getVolume(),
                  entity.getStartDate(),
                  entity.getEndDate(),
-                 entity.getActive()
+                 entity.getActive(),
+                 entity.getMachines() == null ?
+                    null :
+                    entity.getMachines().stream().map(machineMapper::toDto).toList()
          );
     }
 

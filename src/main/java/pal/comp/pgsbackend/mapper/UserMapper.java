@@ -15,7 +15,6 @@ public class UserMapper {
                 userEntity.getTelegramId(),
                 userEntity.getRole(),
                 userEntity.getUserPlots()
-
         );
     }
 

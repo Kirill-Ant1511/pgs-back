@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(exception = Exception.class)
     public ResponseEntity<ExceptionDto> handleException(Exception e) {
-        log.error("Error: {}", e.getMessage());
+        log.error("Error: {}\nType Error: {}", e.getMessage(), e.getClass());
         var exceptionDto = new ExceptionDto(
                 "Ошибка сервера" + e.getClass(),
                 e.getMessage(),

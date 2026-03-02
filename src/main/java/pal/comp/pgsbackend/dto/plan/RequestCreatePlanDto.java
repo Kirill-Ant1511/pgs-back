@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record RequestCreatePlanDto(
         @Null
@@ -20,6 +21,7 @@ public record RequestCreatePlanDto(
         LocalDate startDate,
         LocalDate endDate,
         @Null
-        Boolean isActive
+        Boolean isActive,
+        List<Long> machineIds
 ) {
 }

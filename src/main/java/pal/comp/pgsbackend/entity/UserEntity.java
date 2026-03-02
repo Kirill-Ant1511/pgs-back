@@ -27,7 +27,7 @@ public class UserEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "user_plots", // Имя вашей таблицы из скриншота
+            name = "user_plots",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "plot_id")
     )

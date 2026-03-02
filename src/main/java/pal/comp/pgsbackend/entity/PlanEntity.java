@@ -47,6 +47,13 @@ public class PlanEntity {
     @JsonIgnore
     private List<ReportEntity> workReports;
 
+    @ManyToMany
+    @JoinTable(
+            name = "machine_plans",
+            joinColumns = @JoinColumn(name = "plan_id"),
+            inverseJoinColumns = @JoinColumn(name = "machine_id")
+    )
+    private List<MachineEntity> machines;
 
     public PlanEntity() {}
 
@@ -63,6 +70,14 @@ public class PlanEntity {
         this.startDate = startDate;
         this.endDate = endDate;
         this.isActive = isActive;
+    }
+
+    public List<MachineEntity> getMachines() {
+        return machines;
+    }
+
+    public void setMachines(List<MachineEntity> machines) {
+        this.machines = machines;
     }
 
     public Boolean getActive() {
