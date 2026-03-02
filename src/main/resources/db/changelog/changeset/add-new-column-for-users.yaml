@@ -9,5 +9,6 @@ databaseChangeLog:
               - column:
                   name: role
                   type: varchar(255)
+                  defaultValue: 'USER'
                   constraints:
                     nullable: false
