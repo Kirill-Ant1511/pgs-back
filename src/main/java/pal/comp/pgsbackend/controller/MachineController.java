@@ -14,7 +14,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/machine")
 public class MachineController {
-    private MachineService machineService;
+    private final MachineService machineService;
     public MachineController(MachineService machineService) {
         this.machineService = machineService;
     }
@@ -23,6 +23,11 @@ public class MachineController {
     @GetMapping
     public List<ResponseMachineDto> getMachines() {
         return this.machineService.findAll();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseMachineDto getMachine(@PathVariable Long id) {
+        return this.machineService.findById(id);
     }
 
     @PostMapping

@@ -1,6 +1,7 @@
 package pal.comp.pgsbackend.services;
 
 import jakarta.persistence.EntityNotFoundException;
+import org.apache.coyote.Response;
 import org.springframework.stereotype.Service;
 import pal.comp.pgsbackend.dto.machine.RequestMachineDto;
 import pal.comp.pgsbackend.dto.machine.ResponseMachineDto;
@@ -22,6 +23,13 @@ public class MachineService {
     public List<ResponseMachineDto> findAll() {
         var machineEntity = repository.findAll();
         return machineEntity.stream().map(mapper::toDto).toList();
+    }
+
+    public ResponseMachineDto findById(Long id) {
+        var machineEntity = repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Machine with id " + id + " not found")
+        );
+        return mapper.toDto(machineEntity);
     }
 
     public ResponseMachineDto create(RequestMachineDto requestDto) {
