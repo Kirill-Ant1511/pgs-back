@@ -20,9 +20,11 @@ public interface ReportRepository extends JpaRepository<ReportEntity, Long> {
     AND (:typeWorkId IS NULL OR r.plan.typeWork.id = :typeWorkId)
     AND (:subtypeWorkId IS NULL OR r.plan.subtypeWork.id = :subtypeWorkId)
     AND (:productionName IS NULL OR r.plan.productionName = :productionName)
-    AND (r.date BETWEEN COALESCE(:startDate, r.date) AND COALESCE(:endDate, r.date))
+    AND (r.date >= COALESCE(:startDate, r.date))
+    AND (r.date <= COALESCE(:endDate, r.date))
     AND (r.date = COALESCE(:constDate, r.date))
 """)
+//    AND (r.date BETWEEN COALESCE(:startDate, r.date) AND COALESCE(:endDate, r.date))
     //AND (c.expiredTo <= COALESCE(:expiredTo, c.expiredTo))
     List<ReportEntity> getReportsByFilter(
             @Param("planId") Long planId,
@@ -42,7 +44,8 @@ public interface ReportRepository extends JpaRepository<ReportEntity, Long> {
     AND (:typeWorkId IS NULL OR r.plan.typeWork.id = :typeWorkId)
     AND (:subtypeWorkId IS NULL OR r.plan.subtypeWork.id = :subtypeWorkId)
     AND (:productionName IS NULL OR CAST(r.plan.productionName AS string) LIKE CONCAT('%', CAST(:productionName AS string), '%'))
-    AND (r.date BETWEEN COALESCE(:startDate, r.date) AND COALESCE(:endDate, r.date))
+    AND (r.date >= COALESCE(:startDate, r.date))
+    AND (r.date <= COALESCE(:endDate, r.date))
     AND (r.date = COALESCE(:constDate, r.date))
 """)
     List<ReportEntity> getReportsByFilterWithPagination(
