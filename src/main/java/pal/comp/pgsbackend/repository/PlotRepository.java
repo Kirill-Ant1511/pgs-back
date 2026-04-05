@@ -18,7 +18,7 @@ public interface PlotRepository extends JpaRepository<PlotEntity, Long> {
 
 
     @Query("""
-        SELECT DISTINCT pl from PlanEntity p left join PlotEntity pl ON pl.id = p.plot.id and p.isActive = true
+        SELECT DISTINCT pl from PlanEntity p left join PlotEntity pl ON pl.id = p.plot.id WHERE p.isActive = true
     """)
     List<PlotEntity> findPlaningPlots();
 
