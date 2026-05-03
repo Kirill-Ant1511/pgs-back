@@ -27,4 +27,10 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 """, nativeQuery = true)
     @Transactional
     void addPlotForUser(@Param("userId") Long userId, @Param("plotId") Long plotId);
+
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM user_plots WHERE user_id = :userId AND plot_id = :plotId",nativeQuery = true)
+    void removePlotFromUser(@Param("userId") Long userId, @Param("plotId") Long plotId);
+
 }
