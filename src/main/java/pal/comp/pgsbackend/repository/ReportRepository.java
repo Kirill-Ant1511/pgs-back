@@ -23,10 +23,7 @@ public interface ReportRepository extends JpaRepository<ReportEntity, Long> {
     AND (r.date >= COALESCE(:startDate, r.date))
     AND (r.date <= COALESCE(:endDate, r.date))
     AND (r.date = COALESCE(:constDate, r.date))
-    ORDER BY
-        SUBSTRING(r.plan.productionName FROM '^[A-Za-z]+') ASC,
-        CAST(SUBSTRING(r.plan.productionName FROM '[0-9]+$') AS INTEGER) ASC
-""")
+    """)
 //    AND (r.date BETWEEN COALESCE(:startDate, r.date) AND COALESCE(:endDate, r.date))
     //AND (c.expiredTo <= COALESCE(:expiredTo, c.expiredTo))
     List<ReportEntity> getReportsByFilter(

@@ -11,6 +11,7 @@ import pal.comp.pgsbackend.entity.PlotEntity;
 import pal.comp.pgsbackend.mapper.UserMapper;
 import pal.comp.pgsbackend.repository.UserRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,12 +51,14 @@ public class UserService {
         return userMapper.toDto(createdPrManager);
     }
 
-    public ResponseUserDto addPlotForUser(Long userId, Long plotId) {
-        log.info("Adding plot for user {}, plot id = {}", userId, plotId);
+    public ResponseUserDto addPlotForUser(Long userId, List<Long> plotIds) {
+        log.info("Adding plot for user {}, plot id = {}", userId, plotIds);
         var userEntity = userRepository.findById(userId).orElseThrow(
                 () -> new EntityNotFoundException("Such user not exists")
         );
-        userRepository.addPlotForUser(userId, plotId);
+        for (var  plotId : plotIds) {
+            userRepository.addPlotForUser(userId, plotId);
+        }
         return userMapper.toDto(userEntity);
     }
 
@@ -71,8 +74,23 @@ public class UserService {
         userEntity.setTelegramId(updateUserDto.telegramId());
         userEntity.setRole(updateUserDto.role());
         if (updateUserDto.plotIds() != null) {
+            var currentPlotIds = userEntity.getUserPlots().stream()
+                    .map(PlotEntity::getId)
+                    .collect(Collectors.toSet());
+            var newPlotIds = new HashSet<>(updateUserDto.plotIds());
+
+            // Удаляем участки которых нет в новом списке
+            currentPlotIds.stream()
+                    .filter(plotId -> !newPlotIds.contains(plotId))
+                    .forEach(plotId -> userRepository.removePlotFromUser(id, plotId));
+
+            // Добавляем новые участки которых нет в текущих
+            newPlotIds.stream()
+                    .filter(plotId -> !currentPlotIds.contains(plotId))
+                    .forEach(plotId -> userRepository.addPlotForUser(id, plotId));
+
             userEntity.setUserPlots(
-                    updateUserDto.plotIds().stream().map(plotId -> new PlotEntity(plotId, null)).toList()
+                    newPlotIds.stream().map(plotId -> new PlotEntity(plotId, null)).collect(Collectors.toList())
             );
         }
 

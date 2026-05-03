@@ -20,9 +20,7 @@ public interface PlanRepository extends JpaRepository<PlanEntity, Long> {
     AND (:subtypeWorkId IS NULL OR p.subtypeWork.id = :subtypeWorkId)
     AND (:productionName IS NULL OR p.productionName = :productionName)
     AND (:isActive IS NULL OR p.isActive = :isActive)
-    ORDER BY
-        SUBSTRING(p.productionName FROM '^[A-Za-z]+') ASC,
-        CAST(SUBSTRING(p.productionName FROM '[0-9]+$') AS INTEGER) ASC
+    
 """)
     List<PlanEntity> findAllByFilter(
             @Param("plotId") Long plotId,
