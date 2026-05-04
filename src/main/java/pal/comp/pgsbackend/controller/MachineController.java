@@ -2,6 +2,7 @@ package pal.comp.pgsbackend.controller;
 
 
 import jakarta.validation.Valid;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import pal.comp.pgsbackend.dto.machine.RequestMachineDto;
@@ -21,8 +22,8 @@ public class MachineController {
 
 
     @GetMapping
-    public List<ResponseMachineDto> getMachines() {
-        return this.machineService.findAll();
+    public List<ResponseMachineDto> getMachines(@Param("nameSubstring") String nameSubstring) {
+        return this.machineService.findAll(nameSubstring);
     }
 
     @GetMapping("/{id}")

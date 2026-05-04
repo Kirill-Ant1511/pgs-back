@@ -54,7 +54,10 @@ public interface PlanRepository extends JpaRepository<PlanEntity, Long> {
     @Transactional
     void addMachineInPlan(@Param("machineId") Long machineId, @Param("planId") Long planId);
 
-
+    @Modifying
+    @Transactional
+    @Query(value = "DELETE FROM machine_plans WHERE plan_id = :planId AND machine_id = :machineId",nativeQuery = true)
+    void removeMachineFromPlan(@Param("planId") Long planId, @Param("machineId") Long machineId);
 
     PlanEntity findPlanEntitiesByPlotIdAndTypeWorkIdAndSubtypeWorkIdAndProductionNameAndIsActive(
             Long plotId,

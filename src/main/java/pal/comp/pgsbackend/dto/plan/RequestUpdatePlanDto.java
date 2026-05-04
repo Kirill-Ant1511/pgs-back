@@ -4,6 +4,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public record RequestUpdatePlanDto(
         Long plotId,
@@ -13,6 +14,7 @@ public record RequestUpdatePlanDto(
         Float volume,
         LocalDate startDate,
         LocalDate endDate,
+        List<Long> machineIds,
         Boolean isActive
 ) {
     @Override

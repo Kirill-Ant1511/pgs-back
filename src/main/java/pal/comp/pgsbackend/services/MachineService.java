@@ -20,8 +20,8 @@ public class MachineService {
         this.mapper = mapper;
     }
 
-    public List<ResponseMachineDto> findAll() {
-        var machineEntity = repository.findAll();
+    public List<ResponseMachineDto> findAll(String nameSubstring) {
+        var machineEntity = repository.findAllMachineByName(nameSubstring);
         return machineEntity.stream().map(mapper::toDto).toList();
     }
 
