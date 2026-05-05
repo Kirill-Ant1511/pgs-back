@@ -12,9 +12,11 @@ import pal.comp.pgsbackend.dto.plan.RequestPlanFilter;
 import pal.comp.pgsbackend.dto.plan.RequestUpdatePlanDto;
 import pal.comp.pgsbackend.dto.plan.ResponsePlanDto;
 import pal.comp.pgsbackend.entity.MachineEntity;
+import pal.comp.pgsbackend.entity.PlotEntity;
 import pal.comp.pgsbackend.mapper.PlanMapper;
 import pal.comp.pgsbackend.repository.PlanRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -128,6 +130,25 @@ public class PlanService {
         planEntity.get().setActive(
                 planToUpdate.isActive() != null ? planToUpdate.isActive() : planEntity.get().getActive()
         );
+
+        if (planToUpdate.machineIds() != null) {
+            System.out.println("machine ids : " + planToUpdate.machineIds());
+            var currentMachineIds = planEntity.get().getMachines().stream()
+                    .map(MachineEntity::getId)
+                    .collect(Collectors.toSet());
+            var newMachineIds = new HashSet<>(planToUpdate.machineIds());
+
+            currentMachineIds.stream()
+                    .filter(mchId -> !newMachineIds.contains(mchId))
+                    .forEach(mchId -> planRepository.removeMachineFromPlan(id, mchId));
+
+            newMachineIds.stream()
+                    .filter(mchId -> !currentMachineIds.contains(mchId))
+                    .forEach(mchId -> planRepository.addMachineInPlan(mchId, id));
+            planEntity.get().setMachines(
+                    newMachineIds.stream().map(MachineEntity::new).collect(Collectors.toList())
+            );
+        }
         var planEntitySaved = this.planRepository.save(planEntity.get());
         return planMapper.toDto(planEntitySaved);
     }
